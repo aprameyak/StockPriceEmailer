@@ -52,7 +52,7 @@ export const handler = async (event) => {
 
   const command = new SendEmailCommand({
     Destination: {
-      ToAddresses: ["aprameyakannan@gmail.com"],
+      ToAddresses: [VERIFIEDRECEPIENTEMAIL],
     },
     Message: {
       Body: {
@@ -60,14 +60,14 @@ export const handler = async (event) => {
       },
       Subject: { Data: `Daily Email - ${formattedDate}` },
     },
-    Source: "aprameya557@gmail.com",
+    Source: VERIFIEDSOURCEEMAIL,
   });
 
   try {
     let response = await ses.send(command);
-    return response; // Process the response if needed
+    return response; 
   } catch (error) {
-    console.error("Error sending email:", error); // Log or handle the error
-    throw error; // Re-throw if needed
+    console.error("Error sending email:", error); 
+    throw error; 
   }
 };
