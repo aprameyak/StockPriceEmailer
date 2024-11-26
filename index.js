@@ -1,23 +1,17 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-import fetch from "node-fetch"; 
+import yahooFinance from "yahoo-finance2";
 
 const ses = new SESClient({ region: "us-east-1" });
 
 const fetchStockData = async (symbols) => {
-  const apiKey = APIKEY; 
   const stockData = {};
 
   for (const symbol of symbols) {
     try {
-      const response = await fetch(
-        `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=${apiKey}`
-      );
-      const data = await response.json();
+      const quote = await yahooFinance.quote(symbol);
 
-      if (data["Time Series (1min)"]) {
-        const latestTime = Object.keys(data["Time Series (1min)"])[0];
-        const latestData = data["Time Series (1min)"][latestTime];
-        stockData[symbol] = parseFloat(latestData["1. open"]).toFixed(2);
+      if (quote && quote.regularMarketPrice !== undefined) {
+        stockData[symbol] = quote.regularMarketPrice.toFixed(2);
       } else {
         stockData[symbol] = "Data unavailable";
       }
@@ -31,7 +25,6 @@ const fetchStockData = async (symbols) => {
 };
 
 export const handler = async (event) => {
-  // Get the current date
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString("en-US", {
     weekday: "long",
@@ -40,19 +33,19 @@ export const handler = async (event) => {
     day: "numeric",
   });
 
-  // Fetch stock data
-  const symbols = STOCKTICKERS;
+  const symbols = ["IBM", "AAPL", "MSFT", "TSLA", "VOO", "VTI", "QQQ", "SPY"];
+  
   const stockData = await fetchStockData(symbols);
 
   const stockMessage = symbols
     .map((symbol) => `${symbol}: $${stockData[symbol]}`)
     .join("\n");
 
-  const emailBody = `This is today's email, sent on ${formattedDate}.\n\nStock Data:\n${stockMessage}`;
+  const emailBody = `This is today's email, sent on ${formattedDate}\n\nStock Data:\n${stockMessage}`;
 
   const command = new SendEmailCommand({
     Destination: {
-      ToAddresses: [VERIFIEDRECEPIENTEMAIL],
+      ToAddresses: ["aprameyakannan@gmail.com"],
     },
     Message: {
       Body: {
@@ -60,14 +53,15 @@ export const handler = async (event) => {
       },
       Subject: { Data: `Daily Email - ${formattedDate}` },
     },
-    Source: VERIFIEDSOURCEEMAIL,
+    Source: "aprameya557@gmail.com",
   });
 
   try {
-    let response = await ses.send(command);
-    return response; 
+    const response = await ses.send(command);
+    console.log("Email sent successfully:", response);
+    return response;
   } catch (error) {
-    console.error("Error sending email:", error); 
-    throw error; 
+    console.error("Error sending email:", error);
+    throw error;
   }
 };
