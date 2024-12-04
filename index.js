@@ -33,7 +33,7 @@ export const handler = async (event) => {
     day: "numeric",
   });
 
-  const symbols = ["IBM", "AAPL", "MSFT", "TSLA", "VOO", "VTI", "QQQ", "SPY"];
+  const symbols = SYMBOLS;
   
   const stockData = await fetchStockData(symbols);
 
@@ -45,7 +45,7 @@ export const handler = async (event) => {
 
   const command = new SendEmailCommand({
     Destination: {
-      ToAddresses: ["aprameyakannan@gmail.com"],
+      ToAddresses: [RECEIVEREMAIL],
     },
     Message: {
       Body: {
@@ -53,7 +53,7 @@ export const handler = async (event) => {
       },
       Subject: { Data: `Daily Email - ${formattedDate}` },
     },
-    Source: "aprameya557@gmail.com",
+    Source: "SENDEREMAIL",
   });
 
   try {
