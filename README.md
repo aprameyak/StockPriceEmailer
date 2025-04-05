@@ -1,25 +1,27 @@
-# **StockPriceEmailer**
+# StockPriceEmailer
 
-This project provides the functionality of sending me a daily email of stock prices of given tickers. Below are the components of the system:
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white&style=for-the-badge)
+![AWS Lambda](https://img.shields.io/badge/AWS%20Lambda-FF9900?logo=amazon-aws&logoColor=white&style=for-the-badge)
+![AWS SES](https://img.shields.io/badge/AWS%20SES-005EB8?logo=amazon-aws&logoColor=white&style=for-the-badge)
+![EventBridge](https://img.shields.io/badge/AWS%20EventBridge-0073E6?logo=amazon-aws&logoColor=white&style=for-the-badge)
 
-![Node Badge](https://img.shields.io/badge/Backend-Node.js-brightgreen)
-![AWS Badge](https://img.shields.io/badge/AWS-Lambda-FF9900)
-![SES Badge](https://img.shields.io/badge/AWS-SES-blue)
-![EventBridge Badge](https://img.shields.io/badge/AWS-EventBridge-0073E6)
+## About
+
+This project provides the functionality of sending a **daily email of stock prices** for specified tickers using a serverless architecture powered by AWS services.
 
 ## Components
 
-- **Node.js Script**: The Node.js script uses `SESClient` to send an email using AWS Simple Email Service. It fetches stock data via the Yahoo Finance API based on the tickers specified in the script.
+- **Node.js Script**: Uses `SESClient` to send an email using AWS Simple Email Service (SES). Fetches stock data via the Yahoo Finance API based on predefined tickers.
 
-- **AWS Lambda Function**: The AWS Lambda function has an execution role granting it permission to call the AWS Simple Email Service API. It includes a Lambda layer containing Node.js package dependencies, and the script is executed using a Node.js runtime for ARM architecture.
+- **AWS Lambda Function**: Executes the script using a Node.js runtime (ARM architecture) and includes a Lambda layer for dependencies. It assumes an execution role with permission to access AWS SES.
 
-- **AWS IAM Policy**: The AWS Identity and Access Management policy follows the principle of least privilege and is attached to the IAM role that allows the AWS Lambda function to invoke the AWS SES API.
+- **AWS IAM Policy**: Follows the principle of least privilege and is attached to the Lambda execution role to allow access to AWS SES.
 
-- **AWS SES**: AWS Simple Email Service (SES) is used to register and verify a proxy email address for sending stock data, as well as my personal email to receive the data.
+- **AWS SES**: Handles verified email sending and receiving. Sends the stock data to a personal email from a registered sender address.
 
-- **AWS EventBridge Schedule**: AWS EventBridge triggers the AWS Lambda function on a set schedule. In this case, it is set to run every 24 hours to fetch and send the stock data daily.
+- **AWS EventBridge Schedule**: Triggers the Lambda function every 24 hours to fetch and email stock prices on a recurring basis.
 
 ## Tech Stack
 
-- **Backend**: Node.js, Yahoo Finance API
+- **Backend**: Node.js, Yahoo Finance API  
 - **Cloud Services**: AWS Lambda, AWS IAM, AWS SES, AWS EventBridge
