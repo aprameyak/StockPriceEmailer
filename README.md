@@ -8,6 +8,7 @@
 ## About
 
 This project provides the functionality of sending a **daily email of stock prices** for specified tickers using a serverless architecture powered by AWS services.
+
 <img width="353" height="350" alt="Screenshot 2025-07-28 at 9 47 23 AM" src="https://github.com/user-attachments/assets/010eb74b-737e-499d-acd4-152c7ece0036" />
 
 ## Components
