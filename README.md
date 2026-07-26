@@ -1,29 +1,26 @@
 # StockPriceEmailer
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white&style=for-the-badge)
-![AWS Lambda](https://img.shields.io/badge/AWS%20Lambda-FF9900?logo=amazon-aws&logoColor=white&style=for-the-badge)
-![AWS SES](https://img.shields.io/badge/AWS%20SES-005EB8?logo=amazon-aws&logoColor=white&style=for-the-badge)
-![EventBridge](https://img.shields.io/badge/AWS%20EventBridge-0073E6?logo=amazon-aws&logoColor=white&style=for-the-badge)
+![AWS Lambda](https://img.shields.io/badge/AWS_Lambda-FF9900?logo=awslambda&logoColor=white&style=for-the-badge)
+![AWS SES](https://img.shields.io/badge/AWS_SES-232F3E?logo=amazonaws&logoColor=white&style=for-the-badge)
+![Amazon EventBridge](https://img.shields.io/badge/Amazon_EventBridge-FF4F8B?logo=amazonaws&logoColor=white&style=for-the-badge)
 
 ## About
 
-This project provides the functionality of sending a **daily email of stock prices** for specified tickers using a serverless architecture powered by AWS services.
+**StockPriceEmailer** is a serverless automation tool that fetches daily stock prices for a configurable list of tickers and delivers them to your inbox. Built with **Node.js** on **AWS Lambda**, it uses the **Yahoo Finance API** for real-time price data and **AWS SES** for email delivery, with an **EventBridge** schedule triggering the function every 24 hours.
 
-<img width="353" height="350" alt="Screenshot 2025-07-28 at 9 47 23 AM" src="https://github.com/user-attachments/assets/010eb74b-737e-499d-acd4-152c7ece0036" />
+## Features
 
-## Components
+- Fetches live stock prices for a predefined list of ticker symbols via the Yahoo Finance API
+- Sends a formatted daily email through AWS Simple Email Service (SES)
+- Serverless execution via AWS Lambda with a Node.js ARM runtime
+- Scheduled automatically every 24 hours using AWS EventBridge
+- IAM policy scoped to least-privilege access for SES only
+- Lambda layer handles Node.js dependency packaging
+- Fully configurable ticker list and recipient address
 
-- **Node.js Script**: Uses `SESClient` to send an email using AWS Simple Email Service (SES). Fetches stock data via the Yahoo Finance API based on predefined tickers.
+## Technology Stack
 
-- **AWS Lambda Function**: Executes the script using a Node.js runtime (ARM architecture) and includes a Lambda layer for dependencies. It assumes an execution role with permission to access AWS SES.
-
-- **AWS IAM Policy**: Follows the principle of least privilege and is attached to the Lambda execution role to allow access to AWS SES.
-
-- **AWS SES**: Handles verified email sending and receiving. Sends the stock data to a personal email from a registered sender address.
-
-- **AWS EventBridge Schedule**: Triggers the Lambda function every 24 hours to fetch and email stock prices on a recurring basis.
-
-## Tech Stack
-
-- **Backend**: Node.js, Yahoo Finance API  
-- **Cloud Services**: AWS Lambda, AWS IAM, AWS SES, AWS EventBridge
+- **Runtime**: Node.js
+- **Cloud Services**: AWS Lambda, AWS SES, AWS EventBridge, AWS IAM
+- **Data Source**: Yahoo Finance API
