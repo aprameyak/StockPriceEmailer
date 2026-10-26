@@ -1,5 +1,3 @@
-This project now lives in [StockTickerInfo/emailer](https://github.com/aprameyak/StockTickerInfo/tree/main/emailer).
-
 # StockPriceEmailer
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white&style=for-the-badge)
